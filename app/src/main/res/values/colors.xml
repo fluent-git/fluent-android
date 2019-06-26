@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#eecfcd</color>
+    <color name="colorPrimaryDark">#e99d9f</color>
+    <color name="colorAccent">#3c3c72</color>
+    <color name="colorBlackOverlay">#66000000</color>
+    <color name="colorWhite">#FFFFFF</color>
+
+    <!--Dark Purple: #3c3c72-->
+    <!--Purple: #8f8ccf-->
+    <!--Light Purple: #b1aad4-->
+
+    <!--Dark Pink: #e99d9f-->
+    <!--Pink: #eecfcd-->
+
+
 </resources>

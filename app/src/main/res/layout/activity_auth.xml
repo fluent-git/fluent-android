@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AuthActivity">
+
+    <RelativeLayout
+        android:id="@+id/auth_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/auth_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:orientation="vertical">
+
+            <!-- Logo and title -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="24dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/auth_logo"
+                    android:layout_width="250dp"
+                    android:layout_height="120dp"
+                    android:scaleType="fitCenter" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <!-- form nama -->
+
+                <EditText
+                    android:id="@+id/auth_name"
+                    style="@style/FormInputAuth"
+                    android:layout_margin="3dp"
+                    android:hint="@string/name"
+                    android:inputType="textPersonName" />
+
+                <!-- form email -->
+                <EditText
+                    android:id="@+id/auth_email"
+                    style="@style/FormInputAuth"
+                    android:layout_margin="3dp"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress" />
+
+                <!-- form password -->
+                <EditText
+                    android:id="@+id/auth_password"
+                    style="@style/FormInputAuth"
+                    android:layout_margin="3dp"
+                    android:hint="@string/password"
+                    android:inputType="textPassword" />
+
+                <!-- form konfirmasi password -->
+                <EditText
+                    android:id="@+id/auth_confirm"
+                    style="@style/FormInputAuth"
+                    android:layout_margin="3dp"
+                    android:hint="@string/confirm"
+                    android:inputType="textPassword" />
+
+                <Button
+                    android:id="@+id/auth_login"
+                    style="@style/ButtonNormal"
+                    android:background="@drawable/button_round"
+                    android:onClick="login"
+                    android:text="@string/login" />
+
+                <Button
+                    android:id="@+id/auth_register"
+                    style="@style/ButtonNormal"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/button_round"
+                    android:onClick="register"
+                    android:text="@string/register" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:id="@+id/auth_word"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:padding="4dp"
+                        android:text="@string/register_word"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/small_text" />
+
+                    <TextView
+                        android:id="@+id/auth_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="switchAction"
+                        android:layout_marginTop="10dp"
+                        android:padding="4dp"
+                        android:text="@string/register"
+                        android:textSize="@dimen/small_text"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
