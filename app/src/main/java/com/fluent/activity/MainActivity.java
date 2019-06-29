@@ -14,6 +14,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.fluent.R;
 import com.fluent.utility.PreferencesUtil;
@@ -35,6 +37,18 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        // The action below will perform a voice call
+        ImageButton speakIcon = findViewById(R.id.imageButtonSpeakIcon);
+        speakIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "Making Call Right Now, Hold on tight", Toast.LENGTH_LONG).show();
+                Intent callIntent = new Intent(MainActivity.this, CallActivity.class);
+                startActivity(callIntent);
+            }
+        });
+
     }
 
     @Override
