@@ -90,39 +90,43 @@ public class AuthActivity extends AppCompatActivity {
         final String username = emailEditText.getText().toString().trim();
         final String password = passwordEditText.getText().toString().trim();
 
-        loadingDialog.show();
 
+        finish();
+        startActivity(new Intent(AuthActivity.this, MainActivity.class));
 
-        mApiService.loginRequest(username, password)
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if (response.isSuccessful()){
-                            loadingDialog.dismiss();
-                            try {
-                                JSONObject jsonRESULTS = new JSONObject(response.body().string());
-                                if (jsonRESULTS.getString("message").equals("Invalid username or password")){
-                                    showSnackBar((AuthActivity)view.getContext(), "Email or password is incorrect!");
-                                } else {
-                                    finish();
-                                    startActivity(new Intent(AuthActivity.this, MainActivity.class));
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            loadingDialog.dismiss();
-                        }
-                    }
+        // Commented until back-end response fixed
+        
+        // loadingDialog.show();
+        // mApiService.loginRequest(username, password)
+        //         .enqueue(new Callback<ResponseBody>() {
+        //             @Override
+        //             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+        //                 if (response.isSuccessful()){
+        //                     loadingDialog.dismiss();
+        //                     try {
+        //                         JSONObject jsonRESULTS = new JSONObject(response.body().string());
+        //                         if (jsonRESULTS.getString("message").equals("Invalid username or password")){
+        //                             showSnackBar((AuthActivity)view.getContext(), "Email or password is incorrect!");
+        //                         } else {
+        //                             finish();
+        //                             startActivity(new Intent(AuthActivity.this, MainActivity.class));
+        //                         }
+        //                     } catch (JSONException e) {
+        //                         e.printStackTrace();
+        //                     } catch (IOException e) {
+        //                         e.printStackTrace();
+        //                     }
+        //                 } else {
+        //                     loadingDialog.dismiss();
+        //                 }
+        //             }
 
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.e("debug", "onFailure: ERROR > " + t.toString());
-                        loadingDialog.dismiss();
-                    }
-                });
+        //             @Override
+        //             public void onFailure(Call<ResponseBody> call, Throwable t) {
+        //                 Log.e("debug", "onFailure: ERROR > " + t.toString());
+        //                 loadingDialog.dismiss();
+        //             }
+        //         });
     }
 
 
