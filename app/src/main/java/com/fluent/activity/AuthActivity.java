@@ -7,17 +7,31 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.fluent.R;
 import com.fluent.fragment.LoadingDialogFragment;
+import com.fluent.utility.BaseApiService;
 import com.fluent.utility.PreferencesUtil;
+import com.fluent.utility.UtilsAPI;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AuthActivity extends AppCompatActivity {
 
@@ -35,6 +49,7 @@ public class AuthActivity extends AppCompatActivity {
     private Context context;
     private TextView authTextView;
     private LoadingDialogFragment loadingDialog;
+    private BaseApiService mApiService;
 
 
     private boolean isLoginView = true;
@@ -47,9 +62,10 @@ public class AuthActivity extends AppCompatActivity {
             startActivity(new Intent(this, MainActivity.class));
         } else {
             setContentView(R.layout.activity_auth);
+            context = this;
+            mApiService = UtilsAPI.getAPIService();
             bindView();
             switchToLogin();
-            context = this;
         }
     }
 
@@ -71,18 +87,42 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     public void login(final View view) {
-        final String email = emailEditText.getText().toString().trim();
+        final String username = emailEditText.getText().toString().trim();
         final String password = passwordEditText.getText().toString().trim();
 
         loadingDialog.show();
-        if (email.equals("admin") && password.equals("admin")){
-            loadingDialog.dismiss();
-            finish();
-            startActivity(new Intent(AuthActivity.this, MainActivity.class));
-        } else {
-            loadingDialog.dismiss();
-            showSnackBar((AuthActivity)view.getContext(), "Email or password is incorrect!");
-        }
+
+
+        mApiService.loginRequest(username, password)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()){
+                            loadingDialog.dismiss();
+                            try {
+                                JSONObject jsonRESULTS = new JSONObject(response.body().string());
+                                if (jsonRESULTS.getString("message").equals("Invalid username or password")){
+                                    showSnackBar((AuthActivity)view.getContext(), "Email or password is incorrect!");
+                                } else {
+                                    finish();
+                                    startActivity(new Intent(AuthActivity.this, MainActivity.class));
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            loadingDialog.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.e("debug", "onFailure: ERROR > " + t.toString());
+                        loadingDialog.dismiss();
+                    }
+                });
     }
 
 
