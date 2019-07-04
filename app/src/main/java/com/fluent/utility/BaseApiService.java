@@ -17,7 +17,7 @@ public interface BaseApiService {
     @FormUrlEncoded
     @POST("users/")
     Call<ResponseBody> registerRequest(@Field("username") String username,
-                                       @Field("password") String password,
-                                       @Field("email") String email);
+                                       @Field("email") String email,
+                                       @Field("password") String password);
 
 }
