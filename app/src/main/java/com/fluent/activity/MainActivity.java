@@ -38,17 +38,6 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        // The action below will perform a voice call
-        ImageButton speakIcon = findViewById(R.id.imageButtonSpeakIcon);
-        speakIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Making Call Right Now, Hold on tight", Toast.LENGTH_LONG).show();
-                Intent callIntent = new Intent(MainActivity.this, CallActivity.class);
-                startActivity(callIntent);
-            }
-        });
-
     }
 
     @Override
