@@ -19,13 +19,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.8" />
 
-    <ImageButton
-        android:id="@+id/imageButtonSpeakIcon"
-        android:layout_width="326dp"
-        android:layout_height="366dp"
-        android:src="@drawable/speak_icon"
-        tools:layout_editor_absoluteX="40dp"
-        tools:layout_editor_absoluteY="76dp" />
-
-
 </android.support.constraint.ConstraintLayout>
