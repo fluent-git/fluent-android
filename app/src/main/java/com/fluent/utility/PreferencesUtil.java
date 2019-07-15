@@ -8,6 +8,7 @@ public class PreferencesUtil {
 
     public static final String USER_NAME = "user_name";
     public static final String USER_EMAIL = "user_email";
+    public static final String USER_ID = "user_id";
     public static final String HAS_LOGIN = "has_login";
 
     private static void setBooleanPreferences(Context context, String key, boolean value) {
@@ -69,6 +70,14 @@ public class PreferencesUtil {
 
     public static boolean getHasLogin(Context context) {
         return getBooleanPreferences(context, HAS_LOGIN);
+    }
+
+    public static void setUserId(Context context, int value) {
+        setIntPreferences(context, USER_ID, value);
+    }
+
+    public static int getUserId(Context context) {
+        return getIntPreferences(context, USER_ID);
     }
 
 }

@@ -70,6 +70,7 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     private void bindView() {
+        context = this;
         authContainer = findViewById(R.id.auth_container);
         emailEditText = findViewById(R.id.auth_email);
         passwordEditText = findViewById(R.id.auth_password);
@@ -91,42 +92,48 @@ public class AuthActivity extends AppCompatActivity {
         final String password = passwordEditText.getText().toString().trim();
 
 
-        finish();
-        startActivity(new Intent(AuthActivity.this, MainActivity.class));
+//        finish();
+//        startActivity(new Intent(AuthActivity.this, MainActivity.class));
 
         // Commented until back-end response fixed
         
-        // loadingDialog.show();
-        // mApiService.loginRequest(username, password)
-        //         .enqueue(new Callback<ResponseBody>() {
-        //             @Override
-        //             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-        //                 if (response.isSuccessful()){
-        //                     loadingDialog.dismiss();
-        //                     try {
-        //                         JSONObject jsonRESULTS = new JSONObject(response.body().string());
-        //                         if (jsonRESULTS.getString("message").equals("Invalid username or password")){
-        //                             showSnackBar((AuthActivity)view.getContext(), "Email or password is incorrect!");
-        //                         } else {
-        //                             finish();
-        //                             startActivity(new Intent(AuthActivity.this, MainActivity.class));
-        //                         }
-        //                     } catch (JSONException e) {
-        //                         e.printStackTrace();
-        //                     } catch (IOException e) {
-        //                         e.printStackTrace();
-        //                     }
-        //                 } else {
-        //                     loadingDialog.dismiss();
-        //                 }
-        //             }
+         loadingDialog.show();
+         mApiService.loginRequest(username, password)
+                 .enqueue(new Callback<ResponseBody>() {
+                     @Override
+                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                         if (response.isSuccessful()){
+                             loadingDialog.dismiss();
+                             try {
+                                 JSONObject jsonRESULTS = new JSONObject(response.body().string());
+                                 if (jsonRESULTS.getString("message").equals("Invalid username or password")){
+                                     showSnackBar((AuthActivity)view.getContext(), "Email or password is incorrect!");
+                                 } else if (jsonRESULTS.getString("message").equals("OK")){
+                                     PreferencesUtil.setUserName(context, jsonRESULTS.getJSONObject("user").getString("username"));
+                                     PreferencesUtil.setUserEmail(context, jsonRESULTS.getJSONObject("user").getString("email"));
+                                     PreferencesUtil.setUserId(context, 1); // TODO: Perlu di simpan?
+                                     PreferencesUtil.setHasLogin(context, true);
+                                     finish();
+                                     startActivity(new Intent(AuthActivity.this, MainActivity.class));
+                                 } else {
+                                     showSnackBar((AuthActivity)view.getContext(), "Undefined ERROR. Please Wait.");
+                                 }
+                             } catch (JSONException e) {
+                                 e.printStackTrace();
+                             } catch (IOException e) {
+                                 e.printStackTrace();
+                             }
+                         } else {
+                             loadingDialog.dismiss();
+                         }
+                     }
 
-        //             @Override
-        //             public void onFailure(Call<ResponseBody> call, Throwable t) {
-        //                 Log.e("debug", "onFailure: ERROR > " + t.toString());
-        //                 loadingDialog.dismiss();
-        //             }
-        //         });
+                     @Override
+                     public void onFailure(Call<ResponseBody> call, Throwable t) {
+                         Log.e("debug", "onFailure: ERROR > " + t.toString());
+                         loadingDialog.dismiss();
+                     }
+                 });
     }
 
 
@@ -140,41 +147,53 @@ public class AuthActivity extends AppCompatActivity {
         if (password.equals(confirm)) {
             // Commented until back-end response fixed
 
-            // loadingDialog.show();
-            // mApiService.registerRequest(username, email, password)
-            //         .enqueue(new Callback<ResponseBody>() {
-            //             @Override
-            //             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-            //                 if (response.isSuccessful()){
-            //                     loadingDialog.dismiss();
-            //                     try {
-            //                         JSONObject jsonRESULTS = new JSONObject(response.body().string());
-            //                         if (jsonRESULTS.getString("message").equals("Invalid username or password")){
-            //                             showSnackBar((AuthActivity)view.getContext(), "Email or password is incorrect!");
-            //                         } else {
-            //                             finish();
-            //                             startActivity(new Intent(AuthActivity.this, MainActivity.class));
-            //                         }
-            //                     } catch (JSONException e) {
-            //                         e.printStackTrace();
-            //                     } catch (IOException e) {
-            //                         e.printStackTrace();
-            //                     }
-            //                 } else {
-            //                     loadingDialog.dismiss();
-            //                 }
-            //             }
+             loadingDialog.show();
+             mApiService.registerRequest(username, email, password)
+                     .enqueue(new Callback<ResponseBody>() {
+                         @Override
+                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                             if (response.isSuccessful()){
+                                 loadingDialog.dismiss();
+                                 try {
+                                     JSONObject jsonRESULTS = new JSONObject(response.body().string());
+                                     if (jsonRESULTS.has("id")){
+                                         PreferencesUtil.setUserName(context, jsonRESULTS.getString("username"));
+                                         PreferencesUtil.setUserEmail(context,jsonRESULTS.getString("email"));
+                                         PreferencesUtil.setUserId(context,jsonRESULTS.getInt("id")); // TODO: Perlu di simpan?
+                                         PreferencesUtil.setHasLogin(context, true);
+                                         finish();
+                                         startActivity(new Intent(AuthActivity.this, MainActivity.class));
+                                     } else if (jsonRESULTS.has("username")){
+                                         if (jsonRESULTS.getString("username").equals("A user with that username already exists.")) {
+                                             showSnackBar((AuthActivity) view.getContext(), "A user with that username already exists.");
+                                         }
+                                     } else if (jsonRESULTS.has("email")){
+                                         if (jsonRESULTS.getString("email").equals("user with this email address already exists.")) {
+                                             showSnackBar((AuthActivity) view.getContext(), "A user with that email address already exists.");
+                                         }
+                                     } else {
+                                         showSnackBar((AuthActivity)view.getContext(), "Undefined ERROR. Please Wait.");
+                                     }
+                                 } catch (JSONException e) {
+                                     e.printStackTrace();
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
+                             } else {
+                                 loadingDialog.dismiss();
+                             }
+                         }
 
-            //             @Override
-            //             public void onFailure(Call<ResponseBody> call, Throwable t) {
-            //                 Log.e("debug", "onFailure: ERROR > " + t.toString());
-            //                 loadingDialog.dismiss();
-            //             }
-            //         });
+                         @Override
+                         public void onFailure(Call<ResponseBody> call, Throwable t) {
+                             Log.e("debug", "onFailure: ERROR > " + t.toString());
+                             loadingDialog.dismiss();
+                         }
+                     });
 
-            loadingDialog.dismiss();
-            finish();
-            startActivity(new Intent(AuthActivity.this, MainActivity.class));
+//            loadingDialog.dismiss();
+//            finish();
+//            startActivity(new Intent(AuthActivity.this, MainActivity.class));
 
         } else {
             loadingDialog.dismiss();

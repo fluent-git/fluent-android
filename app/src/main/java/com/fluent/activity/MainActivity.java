@@ -82,6 +82,8 @@ public class MainActivity extends AppCompatActivity
             Intent intent;
             intent = new Intent(this, AuthActivity.class);
             PreferencesUtil.setUserName(this,"");
+            PreferencesUtil.setUserEmail(this,"");
+            PreferencesUtil.setUserId(this,-1);
             PreferencesUtil.setHasLogin(this, false);
 
             finish();
