@@ -158,8 +158,8 @@ public class AuthActivity extends AppCompatActivity {
                                      JSONObject jsonRESULTS = new JSONObject(response.body().string());
                                      if (jsonRESULTS.has("id")){
                                          PreferencesUtil.setUserName(context, jsonRESULTS.getString("username"));
-                                         PreferencesUtil.setUserEmail(context,jsonRESULTS.getString("email"));
-                                         PreferencesUtil.setUserId(context,jsonRESULTS.getInt("id")); // TODO: Perlu di simpan?
+                                         PreferencesUtil.setUserEmail(context, jsonRESULTS.getString("email"));
+                                         PreferencesUtil.setUserId(context, jsonRESULTS.getInt("id")); // TODO: Perlu di simpan?
                                          PreferencesUtil.setHasLogin(context, true);
                                          finish();
                                          startActivity(new Intent(AuthActivity.this, MainActivity.class));
