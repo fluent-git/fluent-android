@@ -1,7 +1,7 @@
 package com.fluent.utility;
 
 public class UtilsAPI {
-    public static final String BASE_URL_API = "http://165.22.105.219:8000";
+    public static final String BASE_URL_API = "https://api.fluent.id";
 
     public UtilsAPI() {
     }
