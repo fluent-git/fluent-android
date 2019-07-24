@@ -6,40 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+    <!--<android.support.design.widget.AppBarLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:theme="@style/AppTheme.AppBarOverlay">-->
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_constraintTop_toTopOf="parent">
+        <!--<android.support.v7.widget.Toolbar-->
+            <!--android:id="@+id/toolbar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="?attr/actionBarSize"-->
+            <!--app:layout_constraintTop_toTopOf="parent">-->
 
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:foregroundGravity="center"
-                android:elevation="10dp">
+            <!--<android.support.constraint.ConstraintLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:foregroundGravity="center"-->
+                <!--android:elevation="10dp">-->
 
-                <ImageView
-                    android:id="@+id/logo_fincent"
-                    android:layout_width="160dp"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="8dp"
-                    android:contentDescription="toolbar"
-                    android:src="@drawable/fluent_logo"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                <!--<ImageView-->
+                    <!--android:id="@+id/logo_fincent"-->
+                    <!--android:layout_width="160dp"-->
+                    <!--android:layout_height="50dp"-->
+                    <!--android:layout_marginStart="8dp"-->
+                    <!--android:contentDescription="toolbar"-->
+                    <!--android:src="@drawable/fluent_logo"-->
+                    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                    <!--app:layout_constraintTop_toTopOf="parent"-->
+                    <!--app:layout_constraintStart_toStartOf="parent"/>-->
 
-            </android.support.constraint.ConstraintLayout>
+            <!--</android.support.constraint.ConstraintLayout>-->
 
 
-        </android.support.v7.widget.Toolbar>
+        <!--</android.support.v7.widget.Toolbar>-->
 
-    </android.support.design.widget.AppBarLayout>
+    <!--</android.support.design.widget.AppBarLayout>-->
 
     <include layout="@layout/content_main" />
 

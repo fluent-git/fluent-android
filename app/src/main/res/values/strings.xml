@@ -15,7 +15,7 @@
     <string name="menu_send">Send</string>
 
     <!--Auth Strings-->
-    <string name="name">Name</string>
+    <string name="name">Username</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="confirm">Confirm Password</string>
