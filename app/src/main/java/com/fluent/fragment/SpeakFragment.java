@@ -2,12 +2,15 @@ package com.fluent.fragment;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -76,12 +79,33 @@ public class SpeakFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_speak, container, false);
 
         WebView web = (WebView) view.findViewById(R.id.web_view);
-        web.getSettings().setUserAgentString(DESKTOP_USER_AGENT);
-        web.getSettings().setMediaPlaybackRequiresUserGesture(false);
-        web.setWebChromeClient(new WebChromeClient());
-        web.setWebViewClient(new WebViewClient());
-        web.getSettings().setJavaScriptEnabled(true);
+//        web.getSettings().setUserAgentString(DESKTOP_USER_AGENT);
+//        web.getSettings().setMediaPlaybackRequiresUserGesture(false);
+//        web.setWebChromeClient(new WebChromeClient());
+//        web.setWebViewClient(new WebViewClient());
+//        web.getSettings().setJavaScriptEnabled(true);
+//        web.loadUrl("https://fluent.id/");
+
+        web = (WebView) view.findViewById(R.id.web_view);
+
+        setUpWebViewDefaults(web);
+
         web.loadUrl("https://fluent.id/");
+
+        web.setWebChromeClient(new WebChromeClient() {
+
+            @Override
+            public void onPermissionRequest(final PermissionRequest request) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        request.grant(request.getResources());
+                    }
+                });
+            }
+
+        });
+
         return view;
     }
 
@@ -122,5 +146,38 @@ public class SpeakFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void setUpWebViewDefaults(WebView webView) {
+        WebSettings settings = webView.getSettings();
+
+        // Enable Javascript
+        settings.setJavaScriptEnabled(true);
+
+        // Use WideViewport and Zoom out if there is no viewport defined
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
+
+        // Enable pinch to zoom without the zoom buttons
+        settings.setBuiltInZoomControls(true);
+
+        // Allow use of Local Storage
+        settings.setDomStorageEnabled(true);
+
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
+            // Hide the zoom controls for HONEYCOMB+
+            settings.setDisplayZoomControls(false);
+        }
+
+        // Enable remote debugging via chrome://inspect
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
+
+        webView.setWebViewClient(new WebViewClient());
+
+        // AppRTC requires third party cookies to work
+//        CookieManager cookieManager = CookieManager.getInstance();
+//        cookieManager.setAcceptThirdPartyCookies(mWebRTCWebView, true);
     }
 }
