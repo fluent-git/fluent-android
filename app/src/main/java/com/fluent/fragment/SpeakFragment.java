@@ -1,10 +1,15 @@
 package com.fluent.fragment;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +41,7 @@ public class SpeakFragment extends Fragment {
     private String mParam2;
     private View view;
     private Context context;
+    private static final int REQUEST_MICROPHONE = 101;
 
     private OnFragmentInteractionListener mListener;
 
@@ -69,6 +75,14 @@ public class SpeakFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         context = getActivity().getApplicationContext();
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.RECORD_AUDIO},
+                    REQUEST_MICROPHONE);
+
+        }
 
     }
 
@@ -90,12 +104,11 @@ public class SpeakFragment extends Fragment {
 
         setUpWebViewDefaults(web);
 
-        web.loadUrl("https://fluent.id/");
-
         web.setWebChromeClient(new WebChromeClient() {
 
             @Override
             public void onPermissionRequest(final PermissionRequest request) {
+                Log.d("SPEAK", "onPermissionRequest");
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -105,6 +118,9 @@ public class SpeakFragment extends Fragment {
             }
 
         });
+
+        web.loadUrl("https://fluent.id/");
+
 
         return view;
     }
@@ -179,5 +195,29 @@ public class SpeakFragment extends Fragment {
         // AppRTC requires third party cookies to work
 //        CookieManager cookieManager = CookieManager.getInstance();
 //        cookieManager.setAcceptThirdPartyCookies(mWebRTCWebView, true);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_MICROPHONE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
     }
 }
